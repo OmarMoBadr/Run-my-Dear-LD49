@@ -62,6 +62,9 @@ class obj():
 
         obj.named[self.name].append(self)
 
+    def check_collison(self,other):
+        return self.x < other.x + other.width and self.x + self.width > other.x and self.y < other.y + other.height and self.y + self.height > other.y
+
     def distance_to(self, other):
         return math.sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
 
@@ -164,11 +167,17 @@ class obj():
             object.update()
 
 class ui():
-    def draw_bar(surface, pos, size, border_color, bar_color, progress, padding=3, border_size=1):
+    def draw_bar(surface, pos, size, border_color, bar_color, progress, vertical = False ,padding=3, border_size=1):
         progress = progress if progress > 0 else 0
-
-        inner_pos = (pos[0] + padding, pos[1] + padding)
-        inner_size = ((size[0] - padding * 2) * progress, size[1] - padding * 2)
+        progress = progress if progress < 1 else 1
+        
+        if vertical:
+            inner_size = (size[0] - padding, (size[1] - padding * 2) * progress)
+            inner_pos = (pos[0] + padding, pos[1] + size[1] - ((size[1] - padding * 2) * progress) + padding)
+        else:
+            inner_size = ((size[0] - padding * 2) * progress, size[1] - padding * 2)
+            inner_pos = (pos[0] + padding, pos[1] + padding)
+        
         pygame.draw.rect(surface, bar_color, (inner_pos, inner_size))
         pygame.draw.rect(surface, border_color, (pos, size), border_size)
 
@@ -201,10 +210,17 @@ class ui():
         pygame.draw.rect(surface, border_color, (pos, size), border_size)
 
 
-    def draw_text(surface, text, color, pos, font):
-        text = font.render(text, False, color)
-        size = text.get_size()
-        surface.blit(text, (pos[0] - size[0]/2, pos[1] - size[1]/2))
+    def draw_text(surface, text, color, pos, font, shadow=True, shadow_pos=(1,1), shadow_color = "black", anti_alias=True, line_spacing=20):
+        lines = text.split("|")
+        line_spacing = line_spacing if len(lines) > 1 else 0
+        for i, line in enumerate(lines):
+            text_surf = font.render(line, anti_alias, color)
+            size = text_surf.get_size()
+            
+            if shadow:
+                shadow_surf = font.render(line, anti_alias, shadow_color)
+                surface.blit(shadow_surf, (pos[0] - size[0]/2 + shadow_pos[0], pos[1] - len(lines) * line_spacing/2 - size[1]/2 + shadow_pos[1] + i * line_spacing))
+            surface.blit(text_surf, (pos[0] - size[0]/2, pos[1] - len(lines) * line_spacing/2 - size[1]/2 + i * line_spacing))
 
 
 class Timer():
