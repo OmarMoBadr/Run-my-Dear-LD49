@@ -7,3 +7,5 @@ The game was made in 48 hours using Python with the module Pygame and my small e
 
 
 ![cover](sprites/ludum_dare_cover.png)
+
+![gameplay](screenshots/gameplay.gif)
