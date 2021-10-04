@@ -24,7 +24,15 @@ target_speed_speed = 0
 
 difficulty = 1
 score = 0
-high_score = 0
+
+try:
+    with open("highscore.txt", "r") as high_file:
+        stored_val = high_file.read()
+        high_score = int(stored_val) if stored_val else 0
+except:
+    open("highscore.txt", "a")
+    high_score = 0
+
 
 instructions = True
 mel = False
@@ -146,12 +154,14 @@ def change_target_speed():
 speed_timer = Timer(0.5,change_target_speed)
 
 def make_cloud():
-    clouds.append((obj("cloud",1500,random.randrange(0,720),100,90,random.choice(cloud_frames)),random.randrange(300,int(800 + difficulty * 100))))
-    cloud_timer.reset(time=2/difficulty)
+    if stage == 1:
+        clouds.append((obj("cloud",1500,random.randrange(0,720),100,90,random.choice(cloud_frames)),random.randrange(300,int(800 + difficulty * 100))))
+        cloud_timer.reset(time=2/difficulty)
 
 def make_cloud2():
-    clouds.append((obj("cloud",-100,random.randrange(0,720),100,90,random.choice(cloud_night_frames)),random.randrange(300,int(800 + difficulty * 100))))
-    cloud_timer.reset(time=2/difficulty)
+    if stage == 2:
+        clouds.append((obj("cloud",-100,random.randrange(0,720),100,90,random.choice(cloud_night_frames)),random.randrange(300,int(800 + difficulty * 100))))
+        cloud_timer.reset(time=2/difficulty)
 
 def new_quote():
     global quote
@@ -265,8 +275,8 @@ def main():
             for c in clouds:
                 c[0].x -= Time.delta_time * c[1]
 
-                if random.random() < 0.001:
-                    c[0].y = random.randrange(0,720)
+                # if random.random() < 0.001:
+                #     c[0].y = random.randrange(0,720)
 
                 if deer_obj.check_collison(c[0]):
                     if deer_obj.distance_to(c[0]) < 50:
@@ -287,8 +297,8 @@ def main():
             for c in clouds:
                 c[0].x += Time.delta_time * c[1]
 
-                if random.random() < 0.001:
-                    c[0].y = random.randrange(0,720)
+                # if random.random() < 0.001:
+                #     c[0].y = random.randrange(0,720)
 
                 if deer_obj.check_collison(c[0]):
                     if deer_obj.distance_to(c[0]) < 50:
@@ -316,19 +326,22 @@ def main():
             ui.draw_text(window, quote,"black",(236,154),small,shadow=False)
             if started:
                 ui.draw_bar(window, (1100,300),(40,250),"black","#CC9B6D",speed/max_speed,vertical=True,padding=0,border_size=6)
-                ui.draw_bar(window, (1150,300),(40,250),"black","#FFC169",target_speed/max_speed,vertical=True,padding=0,border_size=6)
+                ui.draw_bar(window, (1150,300),(40,250),"black","#5D4626",target_speed/max_speed,vertical=True,padding=0,border_size=6)
             elif score > 0 :
-                ui.draw_text(window,str("Your score is " + str(int(score))),"white", (640,100),font, shadow_color="#A08445")
+                ui.draw_text(window,str("Your score: " + str(int(score))),"white", (640,100),pixel, shadow_color="#000000")
+                ui.draw_text(window,str("high score: " + str(int(high_score))),"white", (640,140),pixel, shadow_color="#000000")
                 if score >= high_score:
                     ui.draw_text(window,"New high score","white", (640,50),font, shadow_color="black")
                     high_score = score
+                    with open("highscore.txt", "w") as high_file:
+                        high_file.write(str(int(high_score)))
             
             if not started:
                 ui.draw_text(window,"Press space to play","white", (640,400),font, shadow_color="#40351B")
 
 
         if not (stage == 0 and not started):
-            ui.draw_text(window,str("Score : " + str(int(score))),"white", (1100,50),pixel, shadow=False)
+            ui.draw_text(window,str("Score: " + str(int(score))),"white", (1100,50),pixel, shadow=False)
         
         if instructions:
             window.blit(inst,(0,0))
