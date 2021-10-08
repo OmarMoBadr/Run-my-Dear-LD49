@@ -270,7 +270,7 @@ def main():
             Game.update()
 
             difficulty += Time.delta_time /10
-            score += Time.delta_time * difficulty
+            score += (Time.delta_time * difficulty) / 2
 
             for c in clouds:
                 c[0].x -= Time.delta_time * c[1]
@@ -292,7 +292,7 @@ def main():
             Game.update()
 
             difficulty += Time.delta_time /10
-            score += Time.delta_time * difficulty
+            score += (Time.delta_time * difficulty) / 2
 
             for c in clouds:
                 c[0].x += Time.delta_time * c[1]
