@@ -5,6 +5,7 @@ made for Ludum Dare 49 and the theme was (Unstable).
 
 The game was made in 48 hours using Python with the module Pygame and my small engine.
 
+play the game on [itch.io](https://omarmobadr.itch.io/run-my-dear)
 
 ![cover](sprites/ludum_dare_cover.png)
 
