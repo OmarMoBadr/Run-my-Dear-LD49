@@ -10,3 +10,16 @@ play the game on [itch.io](https://omarmobadr.itch.io/run-my-dear)
 ![cover](sprites/ludum_dare_cover.png)
 
 ![gameplay](screenshots/gameplay.gif)
+
+## Getting Started
+
+to run the code on your machine follow these steps:
+1. clone the repo
+```git clone https://github.com/OmarMoBadr/Run-my-Dear-LD49.git```
+2. navigate to the folder
+```cd Run-my-Dear-LD49```
+3. install pygame if you don't have it already
+```pip install pygame```
+if the above command didn't work watch this video [for Windows](https://www.youtube.com/watch?v=AdUZArA-kZw) or [for Mac](https://www.youtube.com/watch?v=E-WhAS6qzsU&)
+4. run ``main.py``
+```python main.py```
